@@ -28,6 +28,10 @@
 				<td>${place.city}</td>
 				<td>${place.country}</td>
 				<td><a href="/places/${place.id}">Details</a></td>
+				<td><form action="/delete" method="post">
+					<input type="hidden" name="id" value="${place.id}">
+					<input type="submit" value="Delete">
+				</form>
 			</tr>
 		</c:forEach>
 	</table>

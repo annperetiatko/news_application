@@ -54,13 +54,23 @@ public class PlaceController {
 		populateModel(model);
 		return "index";
 	}
-	private void populateModel(ModelMap model) {
-		model.addAttribute("places", service.findAllPlaces());
+	
+	@GetMapping("/login")
+	public String goToLogin() {
+		return "login";
 	}
+	
 	@GetMapping(value="/places/{id}")
 	public String goToDetails(ModelMap model, @PathVariable int id) {
 		model.addAttribute("place", service.findPlaceById(id));
 		return "details";
+	}
+	
+	@PostMapping("/delete")
+	public String deletePlace(ModelMap model, @RequestParam int id) {
+		service.deletePlace(id);
+		populateModel(model);
+		return "index";
 	}
 	
 	@PostMapping("/filtered/country")
@@ -85,5 +95,9 @@ public class PlaceController {
 		mAV.setViewName("placeNotFound");
 		mAV.addObject("message", ex.getMessage());
 		return mAV;
+	}
+	
+	private void populateModel(ModelMap model) {
+		model.addAttribute("places", service.findAllPlaces());
 	}
 }

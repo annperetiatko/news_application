@@ -10,4 +10,5 @@ public interface IPlaceService {
 	Place findPlaceById(int id);
 	List<Place> filteredPlacesByCountry(String country);
 	List<Place> filterPlacesByCity(String city);
+	void deletePlace(int id);
 }
