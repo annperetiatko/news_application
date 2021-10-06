@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fdmgroup.PlacesDemo.exception.PlaceNotFoundException;
 import com.fdmgroup.PlacesDemo.model.Place;
 import com.fdmgroup.PlacesDemo.services.IPlaceService;
 
@@ -74,5 +75,15 @@ public class PlaceController {
 		model.addAttribute("filteredPlaces", service.filterPlacesByCity(city));
 		populateModel(model);
 		return "index";
+	}
+	
+	@ExceptionHandler(value = PlaceNotFoundException.class)
+	@ResponseStatus(code = HttpStatus.NOT_FOUND)
+	public ModelAndView placeNotFound(PlaceNotFoundException ex) {
+		ModelAndView mAV = new	ModelAndView();
+		//mAV.setStatus(HttpStatus.NOT_FOUND);
+		mAV.setViewName("placeNotFound");
+		mAV.addObject("message", ex.getMessage());
+		return mAV;
 	}
 }
