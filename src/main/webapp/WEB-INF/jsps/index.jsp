@@ -36,30 +36,5 @@
 		</c:forEach>
 	</table>
 	
-	<form action="/filtered/country" method="post">
-		<input type="text" name="country" placeholder="Enter country to filter">
-		<input type="submit" value="Filter by country">
-	</form>
-	<form action="/filtered/city" method="post">
-		<input type="text" name="city" placeholder="Enter city to filter">
-		<input type="submit" value="Filter by city">
-	</form>
-	
-	
-	<table>
-		<tr>
-			<th>ID</th>
-			<th>City</th>
-			<th>Country</th>
-		</tr>
-		<c:forEach items="${filteredPlaces}" var="place">
-			<tr>
-				<td>${place.id}</td>
-				<td>${place.city}</td>
-				<td>${place.country}</td>
-				<td><a href="/places/${place.id}">Details</a></td>
-			</tr>
-		</c:forEach>
-	</table>
 </body>
 </html>
