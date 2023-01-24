@@ -9,4 +9,5 @@ public interface IPlaceService {
 	void createNewPlace(Place place);
 	Place findPlaceById(int id);
 	void deletePlace(int id);
+	List<Place> filterPlaces(String filter);
 }

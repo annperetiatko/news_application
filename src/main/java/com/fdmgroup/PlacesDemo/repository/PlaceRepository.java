@@ -10,4 +10,7 @@ import com.fdmgroup.PlacesDemo.model.Place;
 @Repository
 public interface PlaceRepository extends JpaRepository<Place, Integer> {
 
+	List<Place> findByCountryIgnoreCaseContaining(String filter);
+	List<Place> findByCityIgnoreCaseContaining(String filter);
+
 }

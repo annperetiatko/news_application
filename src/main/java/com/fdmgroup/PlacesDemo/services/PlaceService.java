@@ -2,6 +2,8 @@ package com.fdmgroup.PlacesDemo.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,16 @@ public class PlaceService implements IPlaceService {
 	@Override
 	public void deletePlace(int id) {
 		repo.delete(findPlaceById(id));	
+	}
+
+	@Override
+	public List<Place> filterPlaces(String filter) {
+		List<Place> filteredByCity = repo.findByCityIgnoreCaseContaining(filter);
+		List<Place> filteredByCountry = repo.findByCountryIgnoreCaseContaining(filter);
+		
+		filteredByCity.addAll(filteredByCountry);
+		List<Place> filteredPlaces = filteredByCity.stream().distinct().collect(Collectors.toList());
+		return filteredPlaces;
 	}
 
 }

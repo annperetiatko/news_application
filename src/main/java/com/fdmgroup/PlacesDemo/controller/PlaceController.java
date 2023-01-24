@@ -67,6 +67,15 @@ public class PlaceController {
 		return "index";
 	}
 	
+	@PostMapping("/filtered")
+	public String filterPlaces(ModelMap model, @RequestParam String filter) {
+		List<Place> filteredPlaces = service.filterPlaces(filter);
+		
+		model.addAttribute("filteredPlaces", filteredPlaces);
+		populateModel(model);
+		return "index";
+	}
+	
 	private void populateModel(ModelMap model) {
 		model.addAttribute("places", service.findAllPlaces());
 	}

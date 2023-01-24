@@ -40,8 +40,8 @@
 	<br/>
 	
 	<form action="/filtered" method="post">
-		<input type="text" name="country"/>
-		<input type="submit" value="Filter by Country"/>
+		<input type="text" name="filter"/>
+		<input type="submit" value="Filter"/>
 	</form>
 	<h3>Filtered Places</h3>
 	<table>
