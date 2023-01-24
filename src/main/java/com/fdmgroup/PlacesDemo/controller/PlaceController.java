@@ -54,11 +54,6 @@ public class PlaceController {
 		return "index";
 	}
 	
-	@GetMapping("/login")
-	public String goToLogin() {
-		return "login";
-	}
-	
 	@GetMapping(value="/places/{id}")
 	public String goToDetails(ModelMap model, @PathVariable int id) {
 		model.addAttribute("place", service.findPlaceById(id));

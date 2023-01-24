@@ -4,12 +4,12 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Login</title>
+<title>Register</title>
 </head>
 <body>
-	<h3>Log in to Places</h3>
-
-	<form action="/login" method="post">
+	<h3>Register for Places</h3>
+	<div>${message}</div>
+	<form action="/register" method="post">
 		<div>
 			<label for="username">User name:</label>
 			<input type="text" name="username" placeholder="User name">
@@ -18,10 +18,8 @@
 			<label for="password">Password:</label>
 			<input type="password" name="password" placeholder="Password">		
 		</div>
-		<input type="submit" value="Log in">
+		<input type="submit" value="Register">
 	</form>
-	<div>
-		<a href="/register">Register for Places</a>
-	</div>
+
 </body>
 </html>
