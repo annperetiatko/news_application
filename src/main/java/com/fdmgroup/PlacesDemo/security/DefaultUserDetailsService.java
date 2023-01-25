@@ -23,14 +23,13 @@ public class DefaultUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = findByUsername(username);
+		Optional<User> optUser = findByUsername(username);
+		User user = optUser.orElseThrow(() -> new UsernameNotFoundException(username));
 		return new UserPrincipal(user);
 	}
 	
-	public User findByUsername(String username) {
-		Optional<User> optUser = repo.findByUsername(username);
-		User user = optUser.orElse(new User("default username"));
-		return user;
+	public Optional<User> findByUsername(String username) {
+		return repo.findByUsername(username);
 	}
 	
 	public void saveUser(User user) {

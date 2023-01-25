@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fdmgroup.PlacesDemo.exception.PlaceNotFoundException;
 import com.fdmgroup.PlacesDemo.model.Place;
 import com.fdmgroup.PlacesDemo.services.IPlaceService;
 
@@ -55,13 +56,13 @@ public class PlaceController {
 	}
 	
 	@GetMapping(value="/places/{id}")
-	public String goToDetails(ModelMap model, @PathVariable int id) {
+	public String goToDetails(ModelMap model, @PathVariable int id) throws PlaceNotFoundException {
 		model.addAttribute("place", service.findPlaceById(id));
 		return "details";
 	}
 	
 	@PostMapping("/delete")
-	public String deletePlace(ModelMap model, @RequestParam int id) {
+	public String deletePlace(ModelMap model, @RequestParam int id) throws PlaceNotFoundException {
 		service.deletePlace(id);
 		populateModel(model);
 		return "index";
@@ -74,6 +75,17 @@ public class PlaceController {
 		model.addAttribute("filteredPlaces", filteredPlaces);
 		populateModel(model);
 		return "index";
+	}
+	
+	@ExceptionHandler(value = PlaceNotFoundException.class)
+	@ResponseStatus(code = HttpStatus.NOT_FOUND)
+	public ModelAndView handlePlaceNotFoundException(PlaceNotFoundException ex) {
+		ModelAndView mAV = new ModelAndView();
+		mAV.setViewName("notFound");
+		//mAV.setStatus(HttpStatus.NOT_FOUND);
+		mAV.addObject("message", ex.getMessage());
+		mAV.addObject("type", "place");
+		return mAV;
 	}
 	
 	private void populateModel(ModelMap model) {
