@@ -11,9 +11,9 @@
 	<artifactId>SpringInitilizrDemo22-04</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>SpringInitilizrDemo22-04</name>
-	<description>Demo project for Spring Boot</description>
+	<description>News</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>

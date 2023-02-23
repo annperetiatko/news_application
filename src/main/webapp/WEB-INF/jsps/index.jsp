@@ -1,63 +1,89 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+    pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <title>News</title>
 </head>
 <body>
-	<%@ include file="menu.jsp" %>
-	<h3>My Favorite Places</h3>
-	<form action="/" method="post">
-		<input type="text" name="city" placeholder="City"/>
-		<input type="text" name="country" placeholder="Country"/>
-		<input type="submit" value="Create a new place"/>
-	</form>
-	<table>
-		<tr>
-			<td>ID</td>
-			<th>City</th>
-			<th>Country</th>
-		</tr>
-		<c:forEach items="${places}" var="place">
-			<tr>
-				<td>${place.id}</td>
-				<td>${place.city}</td>
-				<td>${place.country}</td>
-				<td><a href="/places/${place.id}">Details</a></td>
-				<td>
-					<form action="deletePlace" method="post">
-						<input type="hidden" name="id" value="${place.id}"/>
-						<input type="submit" value="Delete"/>
-					</form>
-				</td>
-			</tr>
-		</c:forEach>
-	</table>
-	<br/>
-	<br/>
-	
-	<form action="/filtered" method="post">
-		<input type="text" name="filter"/>
-		<input type="submit" value="Filter"/>
-	</form>
-	<h3>Filtered Places</h3>
-	<table>
-		<tr>
-			<td>ID</td>
-			<th>City</th>
-			<th>Country</th>
-		</tr>
-		<c:forEach items="${filteredPlaces}" var="place">
-			<tr>
-				<td>${place.id}</td>
-				<td>${place.city}</td>
-				<td>${place.country}</td>
-				<td><a href="/places/${place.id}">Details</a></td>
-			</tr>
-		</c:forEach>
-	</table>
+  <div class="wrapper">
+    <header class="header">
+     <%@ include file="headerBar.jsp" %>
+    </header>
+    <main class="main--index">
+      <div class="main__collage">
+        <div class="main__collage-title">Hot news</div>
+        <div class="main__news-container">
+          <div class="main__news-column--first">
+          <c:forEach var="article" items="${listOfArticlesTwo}" varStatus="status">
+            <div class="main__news-row--first">
+              <div class="main__news--container">
+                <div class="main__news--item">
+                  <img class="main__news-item--img" src="${article.photos[0]}" alt="">
+                  <div class="main__rate-item--description">
+                    <div class="main__rate-item--container">
+                      <p class="main__rate-item--title">${article.articleName}</p>
+<%--                        <p class="main__rate-item--text">${articleRating}</p>  --%>
+                      <p class="main__rate-item--text">${article.description}</p>
+                    </div>
+                    <div class="main__rate-item--button">
+                      <a href="/articlePage/${article.id}">Read more...</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </c:forEach>
+          </div>
+          <div class="main__news-column--second">
+            <div class="main__news--container">
+              <c:forEach var="article" items="${listOfArticlesThree}" varStatus="status">
+              <div class="main__news-item">
+                <div class="main__rate-item--description">
+                <img class="main__news-item--img--last" src="${article.photos[0]}" alt="">
+                  <div class="main__rate-item--container">
+                    <p class="main__rate-item--title">${article.articleName}</p>
+                    <p class="main__rate-item--text">${article.description}</p>
+                  </div>
+                </div>
+                <div class="main__rate-item--button">
+                    <a href="/articlePage/${article.id}">Read more...</a>
+                </div>
+              </div>
+              </c:forEach>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="main__rate">
+        <p class="main__rate-title">We need your opinion!</p>
+        <p class="main__rate-subtitle">Rate these articles and let us know if they are worth your time.</p>
+        <div class="main__rate-container">
+          <c:forEach var="article" items="${listOfArticles}" varStatus="status">
+          <div class="main__rate-item">
+            <img class="main__rate-item--img" src="${article.photos[0]}" alt="">
+            <div class="main__rate-item--description">
+              <div class="main__rate-item--container">
+                <p class="main__rate-item--title">${article.articleName}</p>
+                <p class="main__rate-item--text">${article.description}</p>
+              </div>
+              <div class="main__rate-item--button">
+                <a href="/articlePage/${article.id}">Read more...</a>
+              </div>
+            </div>
+          </div>
+          </c:forEach>
+        </div>
+      </div>
+    </main>
+    <footer class="footer">
+    <%@ include file="footerBar.jsp" %>
+    </footer>
+  </div>
 </body>
 </html>
