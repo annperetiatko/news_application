@@ -18,36 +18,19 @@
     <main class="main--index">
       <div class="main__collage">
         <div class="main__collage-title">Hot news</div>
-        <div class="main__news-container">
-          <div class="main__news-column--first">
-          <c:forEach var="article" items="${listOfArticlesTwo}" varStatus="status">
-            <div class="main__news-row--first">
-              <div class="main__news--container">
-                <div class="main__news--item">
-                  <img class="main__news-item--img" src="${article.photos[0]}" alt="">
-                  <div class="main__rate-item--description">
-                    <div class="main__rate-item--container">
-                      <p class="main__rate-item--title">${article.articleName}</p>
-<%--                        <p class="main__rate-item--text">${articleRating}</p>  --%>
-                      <p class="main__rate-item--text">${article.description}</p>
-                    </div>
-                    <div class="main__rate-item--button">
-                      <a href="/articlePage/${article.id}">Read more...</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </c:forEach>
-          </div>
           <div class="main__news-column--second">
             <div class="main__news--container">
-              <c:forEach var="article" items="${listOfArticlesThree}" varStatus="status">
+              <c:forEach var="article" items="${filteredArticles}" varStatus="status">
               <div class="main__news-item">
                 <div class="main__rate-item--description">
                 <img class="main__news-item--img--last" src="${article.photos[0]}" alt="">
                   <div class="main__rate-item--container">
                     <p class="main__rate-item--title">${article.articleName}</p>
+                    <p class="main__rate-item--rating">
+                      <c:if test="${article.averageRating > 0.0}"
+                        >Rating: ${article.averageRating}
+                      </c:if>
+                    </p>
                     <p class="main__rate-item--text">${article.description}</p>
                   </div>
                 </div>
@@ -58,8 +41,7 @@
               </c:forEach>
             </div>
           </div>
-        </div>
-      </div>
+        </div> 
       <div class="main__rate">
         <p class="main__rate-title">We need your opinion!</p>
         <p class="main__rate-subtitle">Rate these articles and let us know if they are worth your time.</p>
@@ -70,6 +52,7 @@
             <div class="main__rate-item--description">
               <div class="main__rate-item--container">
                 <p class="main__rate-item--title">${article.articleName}</p>
+                <p class="main__rate-item--rating">Rating: ${article.averageRating}</p>
                 <p class="main__rate-item--text">${article.description}</p>
               </div>
               <div class="main__rate-item--button">

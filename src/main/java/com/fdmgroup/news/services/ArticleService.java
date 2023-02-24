@@ -1,6 +1,8 @@
 package com.fdmgroup.news.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Optional;
@@ -22,7 +24,7 @@ public class ArticleService implements IArticleService {
 	public Article findByArticleName(String articleName) {
 		Optional<Article> optArticle = repo.findByArticleName(articleName);
 		
-		return optArticle.orElse(new Article("default article"));
+		return optArticle.orElse(new Article("default article", "default category"));
 	}
 
 	@Override
@@ -40,7 +42,7 @@ public class ArticleService implements IArticleService {
 	public Article findArticleById(int id) {
 		Optional<Article> optArticle = repo.findById(id);
 		
-		return optArticle.orElse(new Article("default article"));
+		return optArticle.orElse(new Article("default article", "default category"));
 	}
 
 	@Override

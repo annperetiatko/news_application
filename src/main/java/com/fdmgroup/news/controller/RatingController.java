@@ -46,6 +46,8 @@ public class RatingController {
 	Article article = articleService.findArticleById(articleId);  
 	rating.setArticle(article);
     ratingService.create(rating);
+    article.addRating(rating);
+    articleService.createNewArticle(article);
     return "redirect:/articlePage/" + article.getId();
   }
 
