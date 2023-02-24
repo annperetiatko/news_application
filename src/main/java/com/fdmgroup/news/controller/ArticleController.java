@@ -2,15 +2,20 @@ package com.fdmgroup.news.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,8 +23,10 @@ import com.fdmgroup.news.services.LogService;
 import com.fdmgroup.news.services.RatingService;
 import com.fdmgroup.news.model.Article;
 import com.fdmgroup.news.model.User;
+import com.fdmgroup.news.repository.ArticleRepository;
 import com.fdmgroup.news.util.FileUploadUtil;
 import com.fdmgroup.news.util.Filtering;
+import com.fdmgroup.news.services.ArticleService;
 import com.fdmgroup.news.services.IArticleService;
 
 
@@ -28,6 +35,12 @@ public class ArticleController {
 	
 	@Autowired
 	private IArticleService service;
+	
+    @Autowired
+    private ArticleService articleService;
+    
+    @Autowired
+    private ArticleRepository articleRepository;
 	
 	@Autowired
 	private RatingService ratingService;
@@ -40,6 +53,10 @@ public class ArticleController {
 	@GetMapping(value = "/articlePage")
 	public String goArticlePage(ModelMap model) {
 		login.isLoggedIn(model);
+
+		Article article = new Article();
+		model.addAttribute("article", article);
+		model.addAttribute("filtering", new Filtering());
 		return "articlePage";
 	}
 	
@@ -123,6 +140,29 @@ public class ArticleController {
 		model.addAttribute("pictureUrls", article.getPhotos());
 			
 		model.addAttribute("articleRating", ratingService.getAverageArticleRating(article));
+		
+		String category = article.getCategory();
+		Filtering filtering = new Filtering(category);
+		
+		List<Article> searchedByCategory = new ArrayList<>(0);
+		List<Article> searchedArticles = new ArrayList<>();
+		
+		if (category != "") {
+			searchedByCategory = service.findArticleByCategory(category);
+			if (searchedArticles.isEmpty())
+				searchedArticles.addAll(searchedByCategory);
+		}
+		
+		if (category != "") {
+			searchedArticles.retainAll(searchedByCategory);
+		}
+		
+		searchedArticles.remove(article);
+		
+		
+		model.addAttribute("resultsOfSearchCat", searchedArticles);
+		model.addAttribute("filtering", filtering);
+		model.addAttribute("category", category);
 		
 		return "articlePage";
 	}

@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -22,12 +23,16 @@ public class Rating {
 	public void setArticleValue(Integer articleValue) {
 		this.articleValue = articleValue;
 	}
+	
+	@ManyToOne
+    @JoinColumn(name="article_id")
+    private Article article;
 
 	@ManyToOne
 	  private User user;
 	  
-	  @ManyToOne
-	  private Article article;
+//	  @ManyToOne
+//	  private Article article;
 	  
 	  public Article getArticle() {
 		return article;

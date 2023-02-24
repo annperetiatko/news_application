@@ -25,6 +25,7 @@
             <div class="main__rate-item--description">
               <div class="main__rate-item--container">
                 <p class="main__rate-item--title">${article.articleName}</p>
+                <p class="main__rate-item--rating">Rating: ${article.averageRating}</p>
                 <p class="main__rate-item--text">${article.description}</p>
               </div>
               <div class="main__rate-item--button">

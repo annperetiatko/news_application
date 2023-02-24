@@ -13,21 +13,21 @@ import com.fdmgroup.news.repository.RatingRepository;
 @Service
 public class RatingService implements IRatingService {
 	
-  @Autowired	
-  private RatingRepository ratingRepository;
-  
-  @Override
-  public void create(Rating rating) {
-	 ratingRepository.save(rating);
-  }
-  
-  public Double getAverageArticleRating(Article article) {
-	    List<Rating> ratings = ratingRepository.findByArticle(article);
-	    return ratings.stream()
-	        .mapToInt(Rating::getArticleValue)
-	        .average()
-	        .orElse(0.0);
-  }
+	  @Autowired	
+	  private RatingRepository ratingRepository;
+	  
+	  @Override
+	  public void create(Rating rating) {
+		 ratingRepository.save(rating);
+	  }
+	  
+	  public Double getAverageArticleRating(Article article) {
+		    List<Rating> ratings = ratingRepository.findByArticle(article);
+		    return ratings.stream()
+		        .mapToInt(Rating::getArticleValue)
+		        .average()
+		        .orElse(0.0);
+	  }
 
 }
 

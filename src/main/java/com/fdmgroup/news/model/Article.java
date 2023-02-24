@@ -10,6 +10,8 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -30,22 +32,32 @@ public class Article {
     			   articleTextThree,
     			   articleTextFour;
 
-	@OneToOne
+	@ManyToOne
 	private User owner;
 
-	//	private double rating;
+	@OneToMany
+	private List<Rating> ratingsList = new ArrayList<>();
 	
 	@ElementCollection
 
 	private List<String> photos;
 	
 	
+	public List<Rating> getRating() {
+		return ratingsList;
+	}
+
+	public void setRating(List<Rating> ratingsList) {
+		this.ratingsList = ratingsList;
+	}
+
 	public Article() {
 	}
 
-	public Article(String articleName) {
+	public Article(String articleName, String category) {
 		super();
 		this.articleName = articleName;
+		this.category = category;
 	}
 
 	public Integer getId() {
@@ -88,14 +100,6 @@ public class Article {
 		this.owner = owner;
 	}
 
-	//	public double getRating() {
-	//		return rating;
-	//	}
-
-	//	public void setRating(double rating) {
-	//		this.rating = rating;
-	//	}
-
 	public List<String> getPhotos() {
 		return photos;
 	}
@@ -114,16 +118,8 @@ public class Article {
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(category, 
-				            description, 
-				            photos, 
-				            articleName, 
-				            owner, 
-				            //			            rating,
-				            articleTextOne,
-				            articleTextTwo,
-				            articleTextThree,
-				            articleTextFour);
+		return Objects.hash(articleName, articleTextFour, articleTextOne, articleTextThree, articleTextTwo, category,
+				description, id, owner, photos, ratingsList);
 	}
 
 
@@ -136,16 +132,13 @@ public class Article {
 		if (getClass() != obj.getClass())
 			return false;
 		Article other = (Article) obj;
-		return Objects.equals(category, other.category)
-				&& Objects.equals(description, other.description)
-			    && Objects.equals(photos, other.photos)
-			    && Objects.equals(owner, other.owner)
-				&& Objects.equals(articleName, other.articleName)
+		return Objects.equals(articleName, other.articleName) && Objects.equals(articleTextFour, other.articleTextFour)
 				&& Objects.equals(articleTextOne, other.articleTextOne)
-		        && Objects.equals(articleTextTwo, other.articleTextTwo)
-		        && Objects.equals(articleTextThree, other.articleTextThree)
-		        && Objects.equals(articleTextFour, other.articleTextFour);
-		        //			&& Double.doubleToLongBits(rating) == Double.doubleToLongBits(other.rating);
+				&& Objects.equals(articleTextThree, other.articleTextThree)
+				&& Objects.equals(articleTextTwo, other.articleTextTwo) && Objects.equals(category, other.category)
+				&& Objects.equals(description, other.description) && Objects.equals(id, other.id)
+				&& Objects.equals(owner, other.owner) && Objects.equals(photos, other.photos)
+				&& Objects.equals(ratingsList, other.ratingsList);
 	}
 
 	public String getArticleTextOne() {
@@ -180,4 +173,14 @@ public class Article {
 		this.articleTextFour = articleTextFour;
 	}
 
+	public void addRating(Rating rating2) {
+		ratingsList.add(rating2);
+	}
+	
+	public double getAverageRating() {
+	    return ratingsList.stream()
+	        .mapToInt(Rating::getArticleValue)
+	        .average()
+	        .orElse(0.0);
+	}
 }
