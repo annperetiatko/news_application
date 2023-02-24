@@ -37,7 +37,7 @@ public class LogService {
 
 		boolean isLoggedIn = isLoggedIn();
 		if (isLoggedIn) {
-			UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserPrincipal user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			model.addAttribute("loggedIn", isLoggedIn);
 			model.addAttribute("firstname", user.getFirstName());
 			model.addAttribute("user_id", user.getId());
