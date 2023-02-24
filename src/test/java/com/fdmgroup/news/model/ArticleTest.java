@@ -66,7 +66,7 @@ public class ArticleTest {
 	    
 	    @Test
 	    public void testEquals() {
-	        Article article2 = new Article("Test Article");
+	        Article article2 = new Article("Test Article", "Test category");
 	        article2.setOwner(owner);
 //	        article2.setPhotos(photos);
 //	        assertTrue(article.equals(article2));
@@ -74,7 +74,7 @@ public class ArticleTest {
 	    
 	    @Test
 	    public void testNotEquals() {
-	        Article article2 = new Article("Test Article");
+	        Article article2 = new Article("Test Article", "Test category");
 	        article2.setOwner(owner);
 //	        article2.setPhotos(Arrays.asList("photo1.jpg", "photo2.jpg"));
 //	        assertFalse(article.equals(article2));

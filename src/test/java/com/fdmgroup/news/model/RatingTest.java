@@ -17,7 +17,7 @@ public class RatingTest {
 	public void setUp() {
 		rating = new Rating();
 		user = new User("Test User");
-		article = new Article("Test Article");
+		article = new Article("Test Article", "Test category");
 	}
 	
 	@Test
