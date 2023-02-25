@@ -28,7 +28,7 @@
         <a href="/logout">Log out</a>
         <a href="/addArticle">Add new article</a>
       </div>
-<%--       <form action="/ownerFiltered" method="post">
+<%--        <form action="/ownerFiltered" method="post">
         <input type="hidden" name="filter" value="${filter}">
         <input type="hidden" name="owner" value="${loggedInUser.username}">
         <input type="submit" value="Filter">

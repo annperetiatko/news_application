@@ -245,7 +245,7 @@ public class ArticleController {
 //    }
 //    
 //    @PostMapping("/ownerFiltered")
-//    public String ownerFiltered(ModelMap model, HttpServletRequest request) {
+//    public String ownerFiltered(ModelMap model, HttpServletRequest request,  @RequestParam String filter) {
 //        User loggedInUser = (User) request.getSession().getAttribute("loggedInUser");
 //        if (loggedInUser == null) {
 //            // User is not logged in, redirect to login page
@@ -254,7 +254,8 @@ public class ArticleController {
 //        
 //        List<Article> searchedArticles = service.findArticleByOwner(loggedInUser);
 //        model.addAttribute("resultsOfSearch", searchedArticles);
-//
+//		model.addAttribute("filter", filter);
+//		
 //        return "ownerFiltered";
 //    }
 	
