@@ -166,14 +166,6 @@ public class ArticleController {
 		
 		return "articlePage";
 	}
-	
-	@PostMapping("/delete")
-	public String deleteArticle(ModelMap model, @RequestParam int id) //throws PlaceNotFoundException 
-	{
-		service.deleteArticle(id);
-		populateModel(model);
-		return "index";
-	}
 
 	    @GetMapping("/dropDownFilters")
 	    public String dropDownFilters(ModelMap model) {

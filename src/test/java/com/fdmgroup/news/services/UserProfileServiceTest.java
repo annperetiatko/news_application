@@ -1,63 +1,89 @@
 package com.fdmgroup.news.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
-import org.aspectj.lang.annotation.Before;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.fdmgroup.news.model.User;
+import com.fdmgroup.news.repository.UserRepository;
+import com.fdmgroup.news.services.UserProfileService;
 
+@SpringBootTest
 public class UserProfileServiceTest {
-	
-	private UserProfileService userProfileService;
 
     @Mock
-    private User mockUser;
+    private UserRepository userRepository;
 
-//    @Before
-//    public void setUp() {
+    @InjectMocks
+    private UserProfileService userProfileService;
+
+//    @BeforeEach
+//    public void setup() {
 //        MockitoAnnotations.initMocks(this);
-//        userProfileService = new UserProfileService();
 //    }
-    @BeforeEach
-    public void setUp() {
-        mockUser = new User();
+
+    @Test
+    public void testEditUserDetails_WithValidUser() {
+        User user = new User();
+        user.setUsername("testuser");
+        user.setFirstName("John");
+        user.setSurName("Doe");
+
+        when(userRepository.findByUsername("testuser")).thenReturn(java.util.Optional.of(user));
+
+        User updatedUser = new User();
+        updatedUser.setUsername("testuser");
+        updatedUser.setFirstName("Jane");
+        updatedUser.setSurName("Doe");
     }
 
-//    @Test
-//    public void testEditUserDetails() {
-//        mockUser.setFirstName("John");
-//        mockUser.setSurName("Doe");
-//        mockUser.setEmail("john.doe@example.com");
-//        mockUser.setPassword("password");
-//
-//        User result = userProfileService.editUserDetails(mockUser);
-//
-//        assertNotNull(result);
-//        assertEquals("John", result.getFirstName());
-//        assertEquals("Doe", result.getSurName());
-//        assertEquals("john.doe@example.com", result.getEmail());
-//        assertEquals("password", result.getPassword());
-//    }
+    @Test
+    public void testEditUserDetails_WithInvalidUser() {
+        when(userRepository.findByUsername("invaliduser")).thenReturn(Optional.empty());
 
-//    @Test
-//    public void testDisplayUserDetails() {
-//        mockUser.setFirstName("John");
-//        mockUser.setSurName("Doe");
-//        mockUser.setEmail("john.doe@example.com");
-//        mockUser.setPassword("password");
-//
-//        User result = userProfileService.displayUserDetails(mockUser);
-//
-//        assertNotNull(result);
-//        assertEquals("John", result.getFirstName());
-//        assertEquals("Doe", result.getSurName());
-//        assertEquals("john.doe@example.com", result.getEmail());
-//        assertEquals("password", result.getPassword());
-//    }
+        User user = new User();
+        user.setUsername("invaliduser");
+        user.setFirstName("John");
+        user.setSurName("Doe");
 
+        try {
+            userProfileService.editUserDetails(user);
+        } catch (UsernameNotFoundException ex) {
+            assertEquals("User with username invaliduser not found", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void testDisplayUserDetails_WithValidUser() {
+        User user = new User();
+        user.setUsername("testuser");
+        user.setFirstName("John");
+        user.setSurName("Doe");
+    }
+
+    @Test
+    public void testDisplayUserDetails_WithInvalidUser() {
+        when(userRepository.findByUsername("invaliduser")).thenReturn(Optional.empty());
+
+        User user = new User();
+        user.setUsername("invaliduser");
+        user.setFirstName("John");
+        user.setSurName("Doe");
+
+        try {
+            userProfileService.displayUserDetails(user);
+        } catch (UsernameNotFoundException ex) {
+            assertEquals("User with username invaliduser not found", ex.getMessage());
+        }
+    }
 }
+

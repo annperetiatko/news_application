@@ -1,71 +1,55 @@
 package com.fdmgroup.news.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.fdmgroup.news.model.User;
 import com.fdmgroup.news.repository.UserRepository;
 
+@SpringBootTest
 public class UserServiceTest {
-	
-	 private UserService userService;
 
-	    @Mock
-	    private UserRepository mockUserRepository;
+	@Autowired
+	private UserService userService;
 
-//	    @Before
-//	    public void setUp() {
-//	        MockitoAnnotations.initMocks(this);
-//	        userService = new UserService();
-//	        userService.repo = mockUserRepository;
-//	    }
+	@Mock
+	private UserRepository userRepository;
 
-	    @Test
-	    public void testFindByUsername() {
-	        User mockUser = new User();
-	        mockUser.setFirstName("John");
-	        mockUser.setSurName("Doe");
-	        mockUser.setEmail("john.doe@example.com");
-	        mockUser.setUsername("johndoe");
+	@Test
+	public void testFindByUsername() {
+		// Given
+		String username = "test_user";
+		User user = new User("test_user");
 
-//	        when(mockUserRepository.findByUsername(anyString())).thenReturn(Optional.of(mockUser));
-//
-//	        User result = userService.findByUsername("johndoe");
-//
-//	        assertNotNull(result);
-//	        assertEquals("John", result.getFirstName());
-//	        assertEquals("Doe", result.getSurName());
-//	        assertEquals("john.doe@example.com", result.getEmail());
-//	        assertEquals("johndoe", result.getUsername());
-	    }
+		// When
+		when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+		User result = userService.findByUsername(username);
 
-	    @Test
-	    public void testFindByUserId() {
-	        User mockUser = new User();
-	        mockUser.setFirstName("John");
-	        mockUser.setSurName("Doe");
-	        mockUser.setEmail("john.doe@example.com");
-	        mockUser.setUsername("johndoe");
+		// Then
+		assertThat(result).isEqualTo(user);
+	}
 
-//	        when(mockUserRepository.findByUserId(anyInt())).thenReturn(Optional.of(mockUser));
-//
-//	        User result = userService.findByUserId(1);
-//
-//	        assertNotNull(result);
-//	        assertEquals("John", result.getFirstName());
-//	        assertEquals("Doe", result.getSurName());
-//	        assertEquals("john.doe@example.com", result.getEmail());
-//	        assertEquals("johndoe", result.getUsername());
-	    }
+	@Test
+	public void testFindByUserId() {
+		// Given
+		int id = 123;
+		User user = new User("test_user");
 
+		// When
+		when(userRepository.findByUserId(id)).thenReturn(Optional.of(user));
+		User result = userService.findByUserId(id);
+
+		// Then
+		assertThat(result).isEqualTo(user);
+	}
 }
+

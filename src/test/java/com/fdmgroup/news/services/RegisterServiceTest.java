@@ -1,78 +1,72 @@
 package com.fdmgroup.news.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.ModelMap;
 
 import com.fdmgroup.news.model.User;
+import com.fdmgroup.news.repository.UserRepository;
 import com.fdmgroup.news.security.DefaultUserDetailsService;
+import com.fdmgroup.news.services.IRegisterService;
+import com.fdmgroup.news.services.RegisterService;
 
-
+@SpringBootTest
 public class RegisterServiceTest {
 
-	private RegisterService registerService;
-	private DefaultUserDetailsService userServiceMock;
-	private PasswordEncoder encoderMock;
-	
-//	@Before
-//	public void setup() {
-//		userServiceMock = mock(DefaultUserDetailsService.class);
-//		encoderMock = mock(PasswordEncoder.class);
-//		registerService = new RegisterService();
-//		registerService.userService = userServiceMock;
-//		registerService.encoder = encoderMock;
-//	}
+    @Mock
+    private DefaultUserDetailsService userService;
 
-	@Test
-	public void testRegisterSubmitWithValidUser() {
-		User user = new User();
-		user.setUsername("johndoe");
-		user.setPassword("password");
-		String confirmPassword = "password";
-		ModelMap model = new ModelMap();
+    @Mock
+    private PasswordEncoder encoder;
 
-//		when(userServiceMock.findByUsername(user.getUsername())).thenReturn(Optional.empty());
-//		when(encoderMock.encode(user.getPassword())).thenReturn("encodedPassword");
-//
-//		String viewName = registerService.registerSubmit(user, confirmPassword, model);
-//		assertEquals("index", viewName);
-	}
+    @Mock
+    private ModelMap model;
 
-	@Test
-	public void testRegisterSubmitWithExistingUser() {
-		User user = new User();
-		user.setUsername("johndoe");
-		user.setPassword("password");
-		String confirmPassword = "password";
-		ModelMap model = new ModelMap();
+    @InjectMocks
+    private RegisterService registerService;
 
-//		when(userServiceMock.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
-//
-//		String viewName = registerService.registerSubmit(user, confirmPassword, model);
-//		assertEquals("register", viewName);
-//		assertEquals("This user name already exists", model.get("message"));
-	}
+    @Test
+    public void testRegisterSubmit_WithExistingUser() {
+        User user = new User();
+        user.setUsername("existingUser");
+        Optional<User> userFromDatabase = Optional.of(new User());
+        when(userService.findByUsername(user.getUsername())).thenReturn(userFromDatabase);
+        String result = registerService.registerSubmit(user, "password", model);
+        assertEquals("register", result);
+        assertEquals("This user name already exists", model.get("message"));
+    }
 
-	@Test
-	public void testRegisterSubmitWithNonMatchingPasswords() {
-		User user = new User();
-		user.setUsername("johndoe");
-		user.setPassword("password");
-		String confirmPassword = "differentPassword";
-		ModelMap model = new ModelMap();
+    @Test
+    public void testRegisterSubmit_WithPasswordMismatch() {
+        User user = new User();
+        user.setUsername("newUser");
+        user.setPassword("password");
+        String confirmPassword = "wrongPassword";
+        String result = registerService.registerSubmit(user, confirmPassword, model);
+        assertEquals("register", result);
+        assertEquals("Passwords do not match", model.get("message"));
+    }
 
-//		when(userServiceMock.findByUsername(user.getUsername())).thenReturn(Optional.empty());
-//
-//		String viewName = registerService.registerSubmit(user, confirmPassword, model);
-//		assertEquals("register", viewName);
-//		assertEquals("Passwords do not match", model.get("message"));
-//	}
-}
+    @Test
+    public void testRegisterSubmit_WithValidUser() {
+        User user = new User();
+        user.setUsername("newUser");
+        user.setPassword("password");
+        String confirmPassword = "password";
+        when(userService.findByUsername(user.getUsername())).thenReturn(Optional.empty());
+        when(encoder.encode(user.getPassword())).thenReturn("encodedPassword");
+        String result = registerService.registerSubmit(user, confirmPassword, model);
+        assertEquals("index", result);
+        assertEquals(null, model.get("message"));
+    }
 }

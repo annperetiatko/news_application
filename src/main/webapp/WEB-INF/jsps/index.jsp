@@ -18,8 +18,7 @@
     <main class="main--index">
       <div class="main__collage">
         <div class="main__collage-title">Hot news</div>
-          <div class="main__news-column--second">
-            <div class="main__news--container">
+            <div class="main__news--container"> 
               <c:forEach var="article" items="${filteredArticles}" varStatus="status">
               <div class="main__news-item">
                 <div class="main__rate-item--description">
@@ -39,8 +38,7 @@
                 </div>
               </div>
               </c:forEach>
-            </div>
-          </div>
+             </div>
         </div> 
       <div class="main__rate">
         <p class="main__rate-title">We need your opinion!</p>

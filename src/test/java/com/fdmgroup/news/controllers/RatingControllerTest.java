@@ -1,14 +1,16 @@
 package com.fdmgroup.news.controllers;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.ui.ModelMap;
 
 import com.fdmgroup.news.controller.RatingController;
@@ -18,6 +20,7 @@ import com.fdmgroup.news.services.ArticleService;
 import com.fdmgroup.news.services.LogService;
 import com.fdmgroup.news.services.RatingService;
 
+@SpringBootTest
 public class RatingControllerTest {
 	
 	@InjectMocks
@@ -40,24 +43,26 @@ public class RatingControllerTest {
 		MockitoAnnotations.openMocks(this);
 	}
 	
-	@Test
-	public void save_ShouldSaveRatingAndRedirectToArticlePage() {
-		// Arrange
-		Article article = new Article();
-		article.setId(1);
-		when(articleService.findArticleById(1)).thenReturn(article);
-		
-		Rating rating = new Rating();
-		rating.setArticleValue(3);
-	}
+  @Test
+  public void testGoToRate() {
+    String result = ratingController.save(modelMap);
+    
+    assertEquals("redirect:/ArticlePage", result);
+  }
 	
-//	@Test
-//	public void save_ShouldRedirectToArticlePage() {
-//		// Act
-//		String result = ratingController.save(modelMap);
-//		
-//		// Assert
-//		assertThat(result).isEqualTo("redirect:/ArticlePage");
-//	}
+	@Test
+	public void testSave() {
+	  Rating rating = new Rating();
+	  Article article = new Article();
+	  article.setId(1);
+	  
+	  given(articleService.findArticleById(1)).willReturn(article);
+	  
+	  String result = ratingController.save(modelMap, rating, 1);
+	  
+	  verify(articleService, times(1)).createNewArticle(article);
+	  verify(ratingService, times(1)).create(rating);
+	  assertEquals("redirect:/articlePage/1", result);
+	}
 
 }

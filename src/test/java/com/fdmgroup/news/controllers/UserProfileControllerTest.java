@@ -1,105 +1,117 @@
 package com.fdmgroup.news.controllers;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.fdmgroup.news.controller.UserProfileController;
 import com.fdmgroup.news.model.User;
 import com.fdmgroup.news.security.DefaultUserDetailsService;
+import com.fdmgroup.news.security.UserPrincipal;
 import com.fdmgroup.news.services.LogService;
 
-
+@SpringBootTest
+@AutoConfigureMockMvc
 public class UserProfileControllerTest {
+
+	@Mock
+	private DefaultUserDetailsService userService;
 	
-	private MockMvc mockMvc;
-    private DefaultUserDetailsService userService;
-    private LogService login;
+	@Mock
+	private LogService login;
+	
+	@InjectMocks
+	private UserProfileController userProfileController;
+	
+	@Test
+	public void testEditUserDetailsPageA() throws Exception {
+		User user = new User();
+		user.setUsername("john");
+		user.setFirstName("John");
+		user.setSurName("Doe");
+		user.setEmail("john.doe@example.com");
+		user.setPhoneNumber("+1-555-1234567");
 
-    @BeforeEach
-    public void setup() {
-        userService = mock(DefaultUserDetailsService.class);
-        login = mock(LogService.class);
-    }
+		when(login.getLoggedUser()).thenReturn(user);
 
-    @Test
-    public void testEditUserDetailsPage() throws Exception {
-        // mock the logged-in user
-        User user = new User();
-        user.setUsername("john");
-        user.setFirstName("John");
-        user.setSurName("Doe");
-        user.setEmail("john.doe@example.com");
-        user.setPhoneNumber("+1-555-1234567");
+		ModelAndView modelAndView = userProfileController.editUserDetails(new ModelMap());
 
-//        when(login.getLoggedUser()).thenReturn(user);
-//
-//        mockMvc.perform(get("/editProfile"))
-//            .andExpect(status().isOk())
-//            .andExpect(view().name("editProfile"))
-//            .andExpect(model().attribute("user", user));
-    }
-   
-
-    @Test
-    public void testShowUserDetails() throws Exception {
-        // mock the logged-in user
-        User user = new User();
-        user.setUsername("john");
-        user.setFirstName("John");
-        user.setSurName("Doe");
-        user.setEmail("john.doe@example.com");
-        user.setPhoneNumber("+1-555-1234567");
-
-//        when(login.getLoggedUser()).thenReturn(user);
-//
-//        mockMvc.perform(get("/userProfile"))
-//            .andExpect(status().isOk())
-//            .andExpect(view().name("userProfile"))
-//            .andExpect(model().attribute("userName", user.getUsername()))
-//            .andExpect(model().attribute("userFirstName", user.getFirstName()))
-//            .andExpect(model().attribute("userSurName", user.getSurName()))
-//            .andExpect(model().attribute("userEmail", user.getEmail()))
-//			.andExpect(model().attribute("userPhone", user.getPhoneNumber()));       
-    }
-    
-    @Test
-	public void testEditUserDetails() throws Exception {
-		User testUser = new User();
-		testUser.setUsername("testuser");
-		testUser.setFirstName("Test");
-		testUser.setSurName("User");
-		testUser.setEmail("testuser@test.com");
-		testUser.setPhoneNumber("1234567890");
-
-//		when(login.getLoggedUser()).thenReturn(testUser);
-//		when(userService.saveUser(testUser)).thenReturn(testUser);
-//
-//		mockMvc.perform(post("/editProfile")
-//				.param("firstName", "New First Name")
-//				.param("surName", "New SurName")
-//				.param("email", "newemail@test.com")
-//				.param("phoneNumber", "0987654321"))
-//			.andExpect(status().isOk())
-//			.andExpect(view().name("userProfile"))
-//			.andExpect(model().attribute("userName", testUser.getUsername()))
-//			.andExpect(model().attribute("userFirstName", "New First Name"))
-//			.andExpect(model().attribute("userSurName", "New SurName"))
-//			.andExpect(model().attribute("userEmail", "newemail@test.com"))
-//			.andExpect(model().attribute("userPhone", "0987654321"));
-
-//		verify(login).isLoggedIn(modelAndViewCaptor.capture());
+		assertEquals(modelAndView.getViewName(), "editProfile");
+		assertEquals(modelAndView.getModel().get("user"), user);
 	}
+	
+	@Test
+	public void testShowUserDetails() throws Exception {
+		User user = new User();
+		user.setUsername("john");
+		user.setFirstName("John");
+		user.setSurName("Doe");
+		user.setEmail("john.doe@example.com");
+		user.setPhoneNumber("+1-555-1234567");
+
+		when(login.getLoggedUser()).thenReturn(user);
+
+		ModelMap model = new ModelMap();
+		String viewName = userProfileController.showUserDetails(model);
+
+		assertEquals(viewName, "userProfile");
+		assertEquals(model.get("userName"), "john");
+		assertEquals(model.get("userFirstName"), "John");
+		assertEquals(model.get("userSurName"), "Doe");
+		assertEquals(model.get("userEmail"), "john.doe@example.com");
+		assertEquals(model.get("userPhone"), "+1-555-1234567");
+	}
+	
+	@Test
+	public void testEditUserDetailsPageB() throws Exception {
+		User user = new User();
+		user.setUsername("john");
+		user.setFirstName("John");
+		user.setSurName("Doe");
+		user.setEmail("john.doe@example.com");
+		user.setPhoneNumber("+1-555-1234567");
+		
+		User updatedUser = new User();
+		updatedUser.setUsername("john");
+		updatedUser.setFirstName("John Updated");
+		updatedUser.setSurName("Doe Updated");
+		updatedUser.setEmail("john.doe.updated@example.com");
+		updatedUser.setPhoneNumber("+1-555-1234567");
+
+		when(login.getLoggedUser()).thenReturn(user);
+		
+		Authentication authentication = mock(Authentication.class);
+		UserPrincipal userPrincipal = new UserPrincipal(user);
+		when(authentication.getPrincipal()).thenReturn(userPrincipal);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		ModelMap model = new ModelMap();
+		String viewName = userProfileController.editUserDetails(updatedUser, model);
+
+		assertEquals(viewName, "userProfile");
+		assertEquals(model.get("userName"), "john");
+		assertEquals(model.get("userFirstName"), "John Updated");
+		assertEquals(model.get("userSurName"), "Doe Updated");
+		assertEquals(model.get("userEmail"), "john.doe.updated@example.com");
+		assertEquals(model.get("userPhone"), "+1-555-1234567");
+		
+		verify(userService).saveUser(user);
+	}
+
 }
-
-

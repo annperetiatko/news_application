@@ -31,7 +31,7 @@ public class NewsController {
 		List<Article> allArticles = articleService.findAllArticles();
 		
 		Collections.shuffle(allArticles);
-	    List<Article> listOfArticles = allArticles.subList(0, 3);
+	    List<Article> listOfArticles = allArticles.subList(5, 8);
 		model.addAttribute("listOfArticles", listOfArticles);
 		
         List<Article> filteredArticles = new ArrayList<>();

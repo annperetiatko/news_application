@@ -4,76 +4,78 @@ import com.fdmgroup.news.controller.LoginAndRegisterController;
 import com.fdmgroup.news.model.User;
 import com.fdmgroup.news.services.LogService;
 import com.fdmgroup.news.services.RegisterService;
-
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
-
+@AutoConfigureMockMvc
+@SpringBootTest
 public class LoginAndRegisterControllerTest {
-	
-	 @Mock
-	    private LogService logService;
 
-	    @Mock
-	    private RegisterService registerService;
+    @Autowired
+    private MockMvc mockMvc;
 
-	    @InjectMocks
-	    private LoginAndRegisterController controller;
+    @MockBean
+    private LogService logService;
 
-	    @Test
-	    void testLogin() {
-	        ModelMap model = new ModelMap();
+    @MockBean
+    private RegisterService registerService;
 
-	        String result = controller.login(model);
+    @Autowired
+    private LoginAndRegisterController loginAndRegisterController;
 
-	        assertEquals("login", result);
-	        verify(logService).isLoggedIn(model);
-	    }
+    @Test
+    public void testLogin() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/login"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("login"));
+        verify(logService, times(1)).isLoggedIn(any(ModelMap.class));
+    }
 
-	    @Test
-	    void testRegister() {
-	        ModelMap model = new ModelMap();
+    @Test
+    public void testRegister() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/register"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("register"));
+        verify(logService, times(1)).isLoggedIn(any(ModelMap.class));
+    }
 
-	        String result = controller.register(model);
+    @Test
+    public void testRegisterSubmit() throws Exception {
+        User user = new User();
+        String confirmPassword = "password";
+        given(registerService.registerSubmit(user, confirmPassword, new ModelMap())).willReturn("redirect:/home");
 
-	        assertEquals("register", result);
-	        verify(logService).isLoggedIn(model);
-	    }
+        String result = loginAndRegisterController.registerSubmit(user, confirmPassword, new ModelMap());
 
-	    @Test
-	    void testRegisterSubmit() {
-	        User user = new User();
-	        String confirmPassword = "password";
-	        ModelMap model = new ModelMap();
+        verify(registerService, times(1)).registerSubmit(user, confirmPassword, new ModelMap());
+        assertEquals("redirect:/home", result);
+    }
 
-	        when(registerService.registerSubmit(user, confirmPassword, model)).thenReturn("success");
+    @Test
+    public void testHandleUsernameNotFoundException() throws Exception {
+        UsernameNotFoundException ex = new UsernameNotFoundException("User not found");
 
-	        String result = controller.registerSubmit(user, confirmPassword, model);
+        ModelAndView mav = loginAndRegisterController.handleUsernameNotFoundException(ex);
 
-	        assertEquals("success", result);
-	        verify(registerService).registerSubmit(user, confirmPassword, model);
-	    }
-
-	    @Test
-	    void testHandleUsernameNotFoundException() {
-	        UsernameNotFoundException ex = new UsernameNotFoundException("User not found");
-
-	        ModelAndView mav = controller.handleUsernameNotFoundException(ex);
-
-	        assertEquals("notFound", mav.getViewName());
-	        assertEquals("user", mav.getModel().get("type"));
-	        assertEquals("User not found", mav.getModel().get("message"));
-	        
-	    }
-
+        assertEquals("notFound", mav.getViewName());
+        assertEquals("user", mav.getModel().get("type"));
+        assertEquals("User not found", mav.getModel().get("message"));
+    }
 }
+
+
