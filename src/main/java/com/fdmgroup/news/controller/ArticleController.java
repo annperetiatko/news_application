@@ -17,9 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fdmgroup.news.services.LogService;
 import com.fdmgroup.news.services.RatingService;
 import com.fdmgroup.news.model.Article;
+import com.fdmgroup.news.model.Comment;
 import com.fdmgroup.news.model.User;
 import com.fdmgroup.news.util.FileUploadUtil;
 import com.fdmgroup.news.util.Filtering;
+import com.fdmgroup.news.services.ArticleService;
+import com.fdmgroup.news.services.CommentService;
 import com.fdmgroup.news.services.IArticleService;
 
 
@@ -35,6 +38,12 @@ public class ArticleController {
 	@Autowired
 	private LogService login;
 	
+    @Autowired
+    private CommentService commentService;
+    
+    @Autowired
+    private ArticleService articleService;
+	
 	User user;
 
 	@GetMapping(value = "/articlePage")
@@ -44,8 +53,23 @@ public class ArticleController {
 		Article article = new Article();
 		model.addAttribute("article", article);
 		model.addAttribute("filtering", new Filtering());
+//		 Article article = articleService.getArticleById(articleId);
+//	        List<Comment> comments = commentService.getCommentsByArticle(article);
 		return "articlePage";
 	}
+	
+//	@GetMapping(value = "/articlePage")
+//	public String goArticlePage(@RequestParam("articleId") Integer articleId, ModelMap model) {
+//	    login.isLoggedIn(model);
+//
+//	    Article article = articleService.findArticleById(articleId);
+//	    List<Comment> comments = commentService.getCommentsByArticle(article);
+//	    model.addAttribute("article", article);
+//	    model.addAttribute("comments", comments);
+//	    model.addAttribute("filtering", new Filtering());
+//	    return "articlePage";
+//	}
+
 	
 	@GetMapping(value = "/addArticle")
 	public String goAddArticle(ModelMap model) {
@@ -150,6 +174,10 @@ public class ArticleController {
 		model.addAttribute("resultsOfSearchCat", searchedArticles);
 		model.addAttribute("filtering", filtering);
 		model.addAttribute("category", category);
+		
+		 Article articleA = articleService.findArticleById(id);
+        List<Comment> comments = commentService.getCommentsByArticle(articleA);
+	    model.addAttribute("comments", comments);
 		
 		return "articlePage";
 	}

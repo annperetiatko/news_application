@@ -48,6 +48,16 @@
 	                </div>
 	            </div>
 	        </div> 
+	         <h2>Comments</h2>
+    <c:forEach items="${comments}" var="comment">
+        <p>${comment.user.username}: ${comment.text}</p>
+    </c:forEach>
+    <h2>Add Comment</h2>
+    <form action="/articlePage/{id}" method="post">
+        <input type="hidden" name="articleId" value="${article.id}">
+        <textarea name="text"></textarea>
+        <button type="submit">Submit</button>
+    </form>
 	        <div class="related__articles">
 	           <p class="main__rate-titleRat">Other articles in the ${category} category:</p>
 			        <div class="main__rate-container">

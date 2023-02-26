@@ -182,4 +182,9 @@ public class Article {
 	        .average()
 	        .orElse(0.0);
 	}
+
+	public Object getComments() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
