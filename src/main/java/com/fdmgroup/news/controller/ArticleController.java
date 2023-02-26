@@ -53,22 +53,8 @@ public class ArticleController {
 		Article article = new Article();
 		model.addAttribute("article", article);
 		model.addAttribute("filtering", new Filtering());
-//		 Article article = articleService.getArticleById(articleId);
-//	        List<Comment> comments = commentService.getCommentsByArticle(article);
 		return "articlePage";
 	}
-	
-//	@GetMapping(value = "/articlePage")
-//	public String goArticlePage(@RequestParam("articleId") Integer articleId, ModelMap model) {
-//	    login.isLoggedIn(model);
-//
-//	    Article article = articleService.findArticleById(articleId);
-//	    List<Comment> comments = commentService.getCommentsByArticle(article);
-//	    model.addAttribute("article", article);
-//	    model.addAttribute("comments", comments);
-//	    model.addAttribute("filtering", new Filtering());
-//	    return "articlePage";
-//	}
 
 	
 	@GetMapping(value = "/addArticle")

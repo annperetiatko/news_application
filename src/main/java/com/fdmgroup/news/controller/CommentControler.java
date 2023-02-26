@@ -46,13 +46,6 @@ public class CommentControler {
 	        
 	    }
 
-
-//	    @GetMapping("/articlePage")
-//	    public ResponseEntity<List<Comment>> getCommentsByArticle(@RequestParam Long articleId) {
-//	        Article article = articleService.getArticleById(articleId);
-//	        List<Comment> comments = commentService.getCommentsByArticle(article);
-//	        return ResponseEntity.ok(comments);
-//	    }
 	}
 
 
