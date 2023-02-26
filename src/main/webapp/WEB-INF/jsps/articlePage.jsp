@@ -11,7 +11,6 @@
   <title>Document</title>
 </head>
 <body background="${article.photos[0]}">
-<!-- <body> -->
   <div class="wrapper">
     <header class="header">
      <%@ include file="headerBar.jsp" %>

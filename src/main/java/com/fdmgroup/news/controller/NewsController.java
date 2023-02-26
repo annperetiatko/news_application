@@ -1,5 +1,6 @@
 package com.fdmgroup.news.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +28,7 @@ public class NewsController {
 	private RatingService ratingService;
 	
 	@GetMapping(value = "/")
-	public String goToIndex(ModelMap model) {
+	public String goToIndex(ModelMap model, Principal principal) {
 		List<Article> allArticles = articleService.findAllArticles();
 		
 		Collections.shuffle(allArticles);
@@ -47,6 +48,11 @@ public class NewsController {
             filteredArticles = allArticles.subList(0, 3);
         }
         model.addAttribute("filteredArticles", filteredArticles);
+        
+        if (principal != null) {
+            model.addAttribute("hotNews", "Top rated news!");
+        }
+        
 		return "index";
 	}
 	

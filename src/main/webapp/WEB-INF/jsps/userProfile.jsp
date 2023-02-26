@@ -27,13 +27,7 @@
         <a href="/editProfile">Edit your profile</a>
         <a href="/logout">Log out</a>
         <a href="/addArticle">Add new article</a>
-      </div>
-<%--        <form action="/ownerFiltered" method="post">
-        <input type="hidden" name="filter" value="${filter}">
-        <input type="hidden" name="owner" value="${loggedInUser.username}">
-        <input type="submit" value="Filter">
-	  </form> --%>
-      
+      </div> 
     </main>
     <footer class="footer">
     <%@ include file="footerBar.jsp" %>

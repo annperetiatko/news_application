@@ -24,9 +24,6 @@ public class UserProfileController {
 	@Autowired
 	private LogService login;
 	
-
-	//method to populate fields with current values of user details
-	
 	@GetMapping("/editProfile")
 	public ModelAndView editUserDetails(ModelMap model) {
 		login.isLoggedIn(model);
@@ -54,19 +51,14 @@ public class UserProfileController {
 		return "userProfile";
 	}
 	
-
-	
-	
 	@PostMapping("/editProfile")
 	public String editUserDetails(@ModelAttribute("user") User updatedUser, ModelMap model) {
 		System.out.println("current user updated " + updatedUser);
 		login.isLoggedIn(model);
 	 
-	    // Get the current logged-in user from the security
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    User loggedInUser = ((UserPrincipal)authentication.getPrincipal()).getUser();
 	 
-	    // Update the current user's details with the updated information
 	    loggedInUser.setFirstName(updatedUser.getFirstName());
 	    loggedInUser.setSurName(updatedUser.getSurName());
 	    loggedInUser.setEmail(updatedUser.getEmail());
@@ -77,8 +69,6 @@ public class UserProfileController {
 		model.addAttribute("userSurName", loggedInUser.getSurName());
 		model.addAttribute("userEmail", loggedInUser.getEmail());
 		model.addAttribute("userPhone", loggedInUser.getPhoneNumber());
-	 
-	    // Save the updated user to the database
 	    
 	    User savedUser = userService.saveUser(loggedInUser);
 	 

@@ -17,7 +17,11 @@
     </header>
     <main class="main--index">
       <div class="main__collage">
-        <div class="main__collage-title">Hot news</div>
+        <div class="main__collage-title">
+          <c:if test="${not empty hotNews}">
+            <div>${hotNews}</div>
+          </c:if>
+        </div>
             <div class="main__news--container"> 
               <c:forEach var="article" items="${filteredArticles}" varStatus="status">
               <div class="main__news-item">
@@ -25,11 +29,7 @@
                 <img class="main__news-item--img--last" src="${article.photos[0]}" alt="">
                   <div class="main__rate-item--container">
                     <p class="main__rate-item--title">${article.articleName}</p>
-                    <p class="main__rate-item--rating">
-                      <c:if test="${article.averageRating > 0.0}"
-                        >Rating: ${article.averageRating}
-                      </c:if>
-                    </p>
+                    <p class="main__rate-item--rating">Rating: ${article.averageRating}</p>
                     <p class="main__rate-item--text">${article.description}</p>
                   </div>
                 </div>

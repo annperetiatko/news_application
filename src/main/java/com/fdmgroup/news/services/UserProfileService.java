@@ -8,14 +8,12 @@ public class UserProfileService implements IUserProfileService {
 
 	@Override
 	public User editUserDetails(User user) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 	@Override
 	public User displayUserDetails(User user) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 		

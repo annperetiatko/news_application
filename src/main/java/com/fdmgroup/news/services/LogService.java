@@ -31,8 +31,6 @@ public class LogService {
 		return null;
 	}
 
-
-	//Perform the login check and inject user info to the header if logged in.
 	public boolean isLoggedIn(ModelMap model) {
 
 		boolean isLoggedIn = isLoggedIn();

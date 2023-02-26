@@ -2,20 +2,15 @@ package com.fdmgroup.news.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,10 +18,8 @@ import com.fdmgroup.news.services.LogService;
 import com.fdmgroup.news.services.RatingService;
 import com.fdmgroup.news.model.Article;
 import com.fdmgroup.news.model.User;
-import com.fdmgroup.news.repository.ArticleRepository;
 import com.fdmgroup.news.util.FileUploadUtil;
 import com.fdmgroup.news.util.Filtering;
-import com.fdmgroup.news.services.ArticleService;
 import com.fdmgroup.news.services.IArticleService;
 
 
@@ -35,12 +28,6 @@ public class ArticleController {
 	
 	@Autowired
 	private IArticleService service;
-	
-    @Autowired
-    private ArticleService articleService;
-    
-    @Autowired
-    private ArticleRepository articleRepository;
 	
 	@Autowired
 	private RatingService ratingService;
@@ -118,7 +105,7 @@ public class ArticleController {
 	
 	
 	@GetMapping(value="/articlePage/{id}")
-	public String seeDetails(ModelMap model, @PathVariable int id) //throws PlaceNotFoundException 
+	public String seeDetails(ModelMap model, @PathVariable int id)
 	{
 		login.isLoggedIn(model);
 		Article article = service.findArticleById(id);
@@ -236,28 +223,6 @@ public class ArticleController {
 		
 		return "dropDownFilters";
 	}
-	
-//    @GetMapping("/ownerFiltered")
-//    public String ownerFiltered(ModelMap model) {
-//    	login.isLoggedIn(model);
-//        model.addAttribute("filtering", new Filtering());
-//        return "ownerFiltered";
-//    }
-//    
-//    @PostMapping("/ownerFiltered")
-//    public String ownerFiltered(ModelMap model, HttpServletRequest request,  @RequestParam String filter) {
-//        User loggedInUser = (User) request.getSession().getAttribute("loggedInUser");
-//        if (loggedInUser == null) {
-//            // User is not logged in, redirect to login page
-//            return "redirect:/login";
-//        }
-//        
-//        List<Article> searchedArticles = service.findArticleByOwner(loggedInUser);
-//        model.addAttribute("resultsOfSearch", searchedArticles);
-//		model.addAttribute("filter", filter);
-//		
-//        return "ownerFiltered";
-//    }
 	
 	private void populateModel(ModelMap model) {
 		login.isLoggedIn(model);

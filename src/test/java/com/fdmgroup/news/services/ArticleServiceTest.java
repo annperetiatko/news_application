@@ -73,18 +73,6 @@ public class ArticleServiceTest {
     }
 
     @Test
-    public void testDeleteArticle() {
-        int articleId = 1;
-        Article article = new Article("Test Article", "Test Category");
-        article.setId(articleId);
-        when(articleRepository.findById(articleId)).thenReturn(Optional.of(article));
-
-        articleService.deleteArticle(articleId);
-
-        verify(articleRepository, times(1)).delete(article);
-    }
-
-    @Test
     public void testFilterArticles() {
         List<Article> articles1 = Arrays.asList(new Article("Test Article 1", "Test Category"), new Article("Test Article 2", "Test Category 2"));
         List<Article> articles2 = Arrays.asList(new Article("Test Article 3", "Test Category"), new Article("Test Article 4", "Test Category 2"));

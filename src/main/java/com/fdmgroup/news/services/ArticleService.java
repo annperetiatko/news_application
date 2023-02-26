@@ -1,8 +1,6 @@
 package com.fdmgroup.news.services;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Optional;
@@ -44,12 +42,6 @@ public class ArticleService implements IArticleService {
 		
 		return optArticle.orElse(new Article("default article", "default category"));
 	}
-
-	@Override
-	public void deleteArticle(int id) {
-		repo.delete(findArticleById(id));
-		
-	}
 	
 	@Override
 	public List<Article> filterArticles(String filter) {
@@ -83,11 +75,5 @@ public class ArticleService implements IArticleService {
 	public List<Article> findArticleByOwner(User loggedInUser) {
 		return repo.findByOwner(loggedInUser);
 	}
-
-//	@Override
-//	public List<Article> findArticleByOwnerId(long userId) {
-//		// TODO Auto-generated method stub
-//		return repo.findByOwner(userId);
-//	}
 
 }

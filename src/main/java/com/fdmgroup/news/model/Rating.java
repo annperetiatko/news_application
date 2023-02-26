@@ -31,9 +31,6 @@ public class Rating {
 	@ManyToOne
 	  private User user;
 	  
-//	  @ManyToOne
-//	  private Article article;
-	  
 	  public Article getArticle() {
 		return article;
 	}

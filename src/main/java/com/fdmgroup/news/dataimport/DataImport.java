@@ -1,12 +1,7 @@
 package com.fdmgroup.news.dataimport;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -17,10 +12,8 @@ import org.springframework.stereotype.Component;
 
 
 import com.fdmgroup.news.model.Article;
-import com.fdmgroup.news.model.Role;
 import com.fdmgroup.news.model.User;
 import com.fdmgroup.news.repository.ArticleRepository;
-import com.fdmgroup.news.repository.RoleRepository;
 import com.fdmgroup.news.repository.UserRepository;
 
 @Component
@@ -28,7 +21,6 @@ public class DataImport implements ApplicationRunner {
 
 	@Autowired
 	private UserRepository userRepository;
-
 
 	@Autowired
 	@Lazy
@@ -78,7 +70,7 @@ public class DataImport implements ApplicationRunner {
 					               "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis,"};
 			
 			User[] owners = {user1, user1, user2, user2, user1, user2, user1, user2, user2, user2, user1, user1};
-//			Double[] ratings = {5.0, 4.7, 4.6, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+
 			List<List<String>> listOfLists = new ArrayList<>();
 			for (int i = 0; i < 12; i++) {
 			    List<String> list = new ArrayList<>();
@@ -95,7 +87,6 @@ public class DataImport implements ApplicationRunner {
 				article.setArticleTextTwo(paragraphs[i]);
 				article.setArticleTextThree(paragraphs[i]);
 				article.setArticleTextFour(paragraphs[i]);
-//				article.setAverageRating(ratings[i]);
 				article.setPhotos(listOfLists.get(i).get(0));;
 				articles.add(article);
 			}

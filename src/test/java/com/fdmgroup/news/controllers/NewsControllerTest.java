@@ -54,7 +54,7 @@ public class NewsControllerTest {
         when(articleServiceMock.findAllArticles()).thenReturn(allArticles);
 
         ModelMap model = new ModelMap();
-        String viewName = newsController.goToIndex(model);
+        String viewName = newsController.goToIndex(model, null);
 
         // Verify the results
         assertEquals("index", viewName);

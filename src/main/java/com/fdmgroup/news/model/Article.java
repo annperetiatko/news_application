@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Article {
@@ -91,11 +90,11 @@ public class Article {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-//
+
 	public User getOwner() {
 		return owner;
 	}
-//
+
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}

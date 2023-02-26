@@ -10,12 +10,8 @@ public interface IArticleService {
 	List<Article> findAllArticles();
 	void createNewArticle(Article article);
 	Article findArticleById(int id); //throws ProductNotFoundException;
-	void deleteArticle(int id); //throws ProductNotFoundException;
 	List<Article> filterArticles(String filter);
 	List<Article> findArticleByCategory(String filter);
 	List<Article> findArticleByOwner(User loggedInUser);
-//	List<Article> findArticleByOwnerId(long userId);
-//	List<Article> getAllArticles();
-//	Article getArticleById(int id);
 	
 }

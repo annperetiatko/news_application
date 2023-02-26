@@ -19,30 +19,6 @@
       <div class="main__login-container">
       <div class="main__login">
         <form action="/editProfile" method="post" class="form">
-<!--           <label for="username">Create username:</label><br>
-          <input 
-            type="text" 
-            id="username" 
-            name="username"
-            class="second"
-            placeholder="Username"
-          ><br>
-          <label for="password">Create password:</label><br>
-          <input 
-            type="password" 
-            id="password" 
-            name="password"
-            class="second"
-            placeholder="Password"
-          ><br>
-          <label for="confrimPassword">Confirm password:</label><br>
-          <input 
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            class="second"
-            placeholder="Confirm password"
-          ><br> -->
           <label for="email">Email:</label><br>
           <input 
             type="email" 

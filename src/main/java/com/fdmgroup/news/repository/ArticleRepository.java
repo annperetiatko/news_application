@@ -15,8 +15,6 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 	List<Article> findByArticleNameIgnoreCaseContaining(String filter);
 	List<Article> findByCategoryIgnoreCase(String filter);
 	List<Article> findByOwner(User loggedInUser);
-//	List<Article> findByCategoryAndIdNotIn(String category, List<Long> ids);
-//	List<Article> findByCategoryAndIdNotIn(String category, List<Integer> singletonList);
 	Article findArticleById(Integer id);
 	
 }

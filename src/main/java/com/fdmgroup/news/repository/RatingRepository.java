@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import com.fdmgroup.news.model.Article;
 import com.fdmgroup.news.model.Rating;
-import com.fdmgroup.news.model.User;
 
 @Repository
 public interface RatingRepository extends JpaRepository<Rating, Long> {
