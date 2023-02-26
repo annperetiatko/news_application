@@ -5,18 +5,15 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.fdmgroup.news.model.Article;
 import com.fdmgroup.news.model.Rating;
 import com.fdmgroup.news.repository.RatingRepository;
-import com.fdmgroup.news.services.RatingService;
 
 @SpringBootTest
 public class RatingServiceTest {

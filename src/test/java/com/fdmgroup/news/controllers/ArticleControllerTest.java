@@ -2,40 +2,32 @@ package com.fdmgroup.news.controllers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.same;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import org.junit.Assert;
+import javax.servlet.http.HttpServletRequest;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.ModelMap;
 
 import com.fdmgroup.news.controller.ArticleController;
-import com.fdmgroup.news.controller.LoginAndRegisterController;
 import com.fdmgroup.news.model.Article;
 import com.fdmgroup.news.services.ArticleService;
 import com.fdmgroup.news.services.IArticleService;
@@ -120,40 +112,73 @@ public class ArticleControllerTest {
             .andExpect(MockMvcResultMatchers.model().attribute("articleTextFour", "This is a test article."));
     }
     
-  @Test
-  public void testSeeDetails() throws Exception {
-      Article article = new Article();
-      article.setId(22);
-      article.setArticleName("Test Article");
-//      when(articleService.findArticleById(22)).thenReturn(article);
-//
-//      mockMvc.perform(get("/articlePage/22"))
-//             .andExpect(status().isOk())
-//             .andExpect(view().name("articlePage"))
-//             .andExpect(model().attribute("article", article))
-//             .andExpect(model().attribute("articleName", "Test Article"));
-  }
-  
-  @Test
-  public void testDropDownFilters() {
-      ModelMap model = new ModelMap();
-      String viewName = articleController.dropDownFilters(model);
+    @Test
+    public void testSeeDetails() throws Exception {
 
-      assertEquals("dropDownFilters", viewName);
-      Filtering filtering = (Filtering) model.get("filtering");
-      assertNotNull(filtering);
-  }
+        Article article = new Article();
+        article.setId(22);
+        article.setArticleName("Test Article");
+        article.setDescription("Test Description");
+        article.setCategory("Test Category");
+        article.setOwner(null);
+        article.setArticleTextOne("Test Text 1");
+        article.setArticleTextTwo("Test Text 2");
+        article.setArticleTextThree("Test Text 3");
+        article.setArticleTextFour("Test Text 4");
+        when(articleService.findArticleById(22)).thenReturn(article);
+
+        MvcResult result = mockMvc.perform(get("/articlePage/22"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("articlePage"))
+                .andReturn();
+
+        ModelMap model = result.getModelAndView().getModelMap();
+        assertEquals(article, model.getAttribute("article"));
+        assertEquals("Test Article", model.getAttribute("articleName"));
+        assertEquals("Test Description", model.getAttribute("articleDescription"));
+        assertEquals("Test Category", model.getAttribute("articleCategory"));
+        assertEquals("Test Owner", model.getAttribute("articleOwner"));
+        assertEquals("Test Text 1", model.getAttribute("articleTextOne"));
+        assertEquals("Test Text 2", model.getAttribute("articleTextTwo"));
+        assertEquals("Test Text 3", model.getAttribute("articleTextThree"));
+        assertEquals("Test Text 4", model.getAttribute("articleTextFour"));
+        assertEquals("Test Photo URL", model.getAttribute("mainPhotoUrl"));
+        assertEquals(Collections.singletonList("Test Photo URL"), model.getAttribute("pictureUrls"));
+        assertNotNull(model.getAttribute("articleRating"));
+        assertEquals("Test Category", model.getAttribute("category"));
+        assertNotNull(model.getAttribute("filtering"));
+        assertNotNull(model.getAttribute("resultsOfSearchCat"));
+        assertNotNull(model.getAttribute("comments"));
+    }
+    
+    @Test
+    public void testDropDownFilters() {
+        ModelMap model = new ModelMap();
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getParameter("category")).thenReturn("TestCategory");
+        String filter = "TestFilter";
+        String viewName = articleController.filteringFunction(model, request, filter);
+
+        assertEquals("dropDownFilters", viewName);
+        Filtering filtering = (Filtering) model.get("filtering");
+        assertNotNull(filtering);
+        
+        List<Article> searchedByCategory = new ArrayList<>(0);
+        List<Article> searchedArticles = new ArrayList<>();
+        searchedByCategory.add(new Article("Test1", "TestCategory"));
+        searchedArticles.add(new Article("Test2", "TestCategory"));
+        searchedArticles.add(new Article("Test3", "TestCategory1"));
+        when(service.findArticleByCategory("TestCategory")).thenReturn(searchedByCategory);
+    }
+
   
   @Test
   public void testFilterByIOS() {
       when(logService.isLoggedIn(model)).thenReturn(true);
 
       articleController.filterByIOS(model);
-//      Filtering expectedFiltering = new Filtering("Android");
-//      Filtering actualFiltering = (Filtering) model.get("filtering");
 
       verify(logService).isLoggedIn(model);
-//      assertEquals(expectedFiltering, actualFiltering);
       String result = articleController.filterByIOS(model);
 
       assertEquals("dropDownFilters", result);
@@ -164,11 +189,8 @@ public class ArticleControllerTest {
       when(logService.isLoggedIn(model)).thenReturn(true);
 
       articleController.filterByAndroid(model);
-//      Filtering expectedFiltering = new Filtering("Android");
-//      Filtering actualFiltering = (Filtering) model.get("filtering");
 
       verify(logService).isLoggedIn(model);
-//      assertEquals(expectedFiltering, actualFiltering);
       String result = articleController.filterByAndroid(model);
 
       assertEquals("dropDownFilters", result);
@@ -179,11 +201,8 @@ public class ArticleControllerTest {
       when(logService.isLoggedIn(model)).thenReturn(true);
 
       articleController.filterByIT(model);
-//      Filtering expectedFiltering = new Filtering("Android");
-//      Filtering actualFiltering = (Filtering) model.get("filtering");
 
       verify(logService).isLoggedIn(model);
-//      assertEquals(expectedFiltering, actualFiltering);
       String result = articleController.filterByIT(model);
 
       assertEquals("dropDownFilters", result);
@@ -194,45 +213,11 @@ public class ArticleControllerTest {
       when(logService.isLoggedIn(model)).thenReturn(true);
 
       articleController.filterByGlobalNews(model);
-//      Filtering expectedFiltering = new Filtering("Android");
-//      Filtering actualFiltering = (Filtering) model.get("filtering");
 
       verify(logService).isLoggedIn(model);
-//      assertEquals(expectedFiltering, actualFiltering);
       String result = articleController.filterByGlobalNews(model);
 
       assertEquals("dropDownFilters", result);
-  }
-  
-  @Test
-  public void testFilteringFunction() throws Exception {
-      // create some dummy articles
-      Article article1 = new Article("Test article 1", "Test content 1");
-      Article article2 = new Article("Test article 2", "Test content 2");
-      Article article3 = new Article("Test article 3", "Test content 3");
-      List<Article> articles = new ArrayList<>();
-      articles.add(article1);
-      articles.add(article2);
-      articles.add(article3);
-
-      // mock the article service to return the dummy articles
-      when(articleService.findArticleByCategory(anyString())).thenReturn(articles);
-
-      // make the request to the controller
-      mockMvc.perform(post("/dropDownFilters")
-              .param("category", "category1")
-              .param("filter", "someFilter"))
-              .andExpect(status().isOk())
-              .andExpect(model().attributeExists("resultsOfSearch"))
-              .andExpect(model().attribute("resultsOfSearch", articles))
-              .andExpect(model().attribute("filter", "someFilter"))
-              .andExpect(model().attribute("filtering", articles));
-
-      // verify that the article service was called with the correct category
-      verify(articleService, times(1)).findArticleByCategory("category1");
-
-      // verify that the login service was called to check if user is logged in
-      verify(logService, times(1)).isLoggedIn(any(ModelMap.class));
   }
 
 }

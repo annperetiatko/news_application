@@ -5,17 +5,14 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.fdmgroup.news.model.User;
 import com.fdmgroup.news.repository.UserRepository;
-import com.fdmgroup.news.services.UserProfileService;
 
 @SpringBootTest
 public class UserProfileServiceTest {
@@ -25,11 +22,6 @@ public class UserProfileServiceTest {
 
     @InjectMocks
     private UserProfileService userProfileService;
-
-//    @BeforeEach
-//    public void setup() {
-//        MockitoAnnotations.initMocks(this);
-//    }
 
     @Test
     public void testEditUserDetails_WithValidUser() {

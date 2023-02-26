@@ -202,13 +202,6 @@ public class ArticleController {
 	        model.addAttribute("filtering", new Filtering("Global"));
 	        return "dropDownFilters";
 	    }
-	    
-	    @PostMapping("/filterByYourArticles")
-	    public String filterByYourArticles(ModelMap model) {
-	    	login.isLoggedIn(model);
-	        model.addAttribute("filtering", new Filtering("Owner"));
-	        return "dropDownFilters";
-	    }
 
 	
 	@PostMapping("/dropDownFilters")

@@ -3,7 +3,6 @@ package com.fdmgroup.news.controllers;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -55,11 +53,11 @@ public class NewsControllerTest {
 
         ModelMap model = new ModelMap();
         String viewName = newsController.goToIndex(model, null);
-
-        // Verify the results
+        
         assertEquals("index", viewName);
-//        assertEquals(listOfArticles, model.get("listOfArticles"));
-//        assertEquals(filteredArticles, model.get("filteredArticles"));
+        assertEquals(listOfArticles, model.get("listOfArticles"));
+        assertEquals(filteredArticles, model.get("filteredArticles"));
+
     }
 
     @Test

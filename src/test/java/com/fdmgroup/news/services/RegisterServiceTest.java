@@ -5,20 +5,15 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.ModelMap;
 
 import com.fdmgroup.news.model.User;
-import com.fdmgroup.news.repository.UserRepository;
 import com.fdmgroup.news.security.DefaultUserDetailsService;
-import com.fdmgroup.news.services.IRegisterService;
-import com.fdmgroup.news.services.RegisterService;
 
 @SpringBootTest
 public class RegisterServiceTest {
