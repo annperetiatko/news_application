@@ -47,17 +47,24 @@
 	                  </form>  
 	                </div>
 	            </div>
+	            <div class="main__rate-comment">
+		            <div class="comment__title">Comments</div>
+		            <div class="main__article--coms">
+					    <c:forEach items="${comments}" var="comment">
+					        <p class="comment__user">${comment.user.username}:</p>
+					        <p class="comment__item">${comment.text}</p>
+					    </c:forEach>
+				    </div>
+				    <div class="comment__subtitle">Add Comment</div>
+				    <div>
+				    <form action="/articlePage/{id}" method="post" class="text">
+				        <input type="hidden" name="articleId" value="${article.id}">
+				        <textarea name="text" class="textarea" required></textarea>
+				        <button type="submit" class="com-button">Send</button>
+				    </form>
+				    </div>
+			    </div>
 	        </div> 
-	         <h2>Comments</h2>
-    <c:forEach items="${comments}" var="comment">
-        <p>${comment.user.username}: ${comment.text}</p>
-    </c:forEach>
-    <h2>Add Comment</h2>
-    <form action="/articlePage/{id}" method="post">
-        <input type="hidden" name="articleId" value="${article.id}">
-        <textarea name="text"></textarea>
-        <button type="submit">Submit</button>
-    </form>
 	        <div class="related__articles">
 	           <p class="main__rate-titleRat">Other articles in the ${category} category:</p>
 			        <div class="main__rate-container">
