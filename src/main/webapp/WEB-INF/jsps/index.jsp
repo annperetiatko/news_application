@@ -13,7 +13,7 @@
 <body>
   <div class="wrapper">
     <header class="header">
-     <%@ include file="headerBar.jsp" %>
+    <%@ include file="headerBar.jsp" %>
     </header>
     <main class="main--index">
       <div class="main__collage">
@@ -38,7 +38,7 @@
                 </div>
               </div>
               </c:forEach>
-             </div>
+            </div>
         </div> 
       <div class="main__rate">
         <p class="main__rate-title">We need your opinion!</p>
