@@ -27,7 +27,6 @@ public class CommentControler {
 	    private UserService userService;
 	    
 	    @Autowired
-	    
 	    private ArticleService articleService;
 
 	    @PostMapping("/articlePage/{articleId}")
