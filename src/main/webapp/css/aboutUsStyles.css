@@ -1,0 +1,27 @@
+.about__us:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.about__us:last-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.about__us-item {
+  margin-bottom: 7px;
+}
+
+.about__us-item:first-child {
+  font-weight: 700;
+}
+
+.logos a {
+  text-decoration: none;
+}
+
+.logo-site {
+  height: 40px;
+  width: 40px;
+}

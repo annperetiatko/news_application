@@ -1,0 +1,25 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  line-height: 14px;
+}
+
+.second {
+  padding: 10px;
+  border: #000 solid 1px;
+  border-radius: 4px;
+}
+
+.warning {
+  font-size: 12px;
+  color: darkred;
+}
+
+.paragraph {
+  line-height: 5px;
+}
+
+.textarea {
+  min-height: 40px;
+}
