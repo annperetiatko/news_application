@@ -39,7 +39,7 @@ You can use these pre-created user credentials:
 2. username: admin | password: 123
 
 Thank you for visiting my website!
-If you feel face any troubles, please, feel free to contact me
+If you feel face any troubles, please, feel free to contact me here: https://www.linkedin.com/in/anna-peretiatko/
 
 Screenshots:
 -
