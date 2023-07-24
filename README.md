@@ -32,8 +32,17 @@ Installation:
    ```
    mvn spring-boot:run
    ```
-9. Finally, access the website by visiting http://localhost:8088
+9. Access the website by visiting http://localhost:8088
+
+You can use these pre-created user credentials:
+1. username: anna | password: 123
+2. username: admin | password: 123
+
+Thank you for visiting my website!
+If you feel face any troubles, please, feel free to contact me
 
 Screenshots:
 -
-
+1. ![883CBFF3-467C-44E1-BA14-93668339866E_1_105_c](https://github.com/annperetiatko/news_application/assets/111366589/62610f06-bbbe-4e37-a199-642ee2ca8e7d)
+2. ![878880D3-A5D9-4FDB-871D-94DF79FDAA9B_1_105_c](https://github.com/annperetiatko/news_application/assets/111366589/eddab355-e59c-44b8-96ad-d10761197dcd)
+3. ![C0EA591C-9D54-477B-A8C4-B2D760BAEDE1_1_105_c](https://github.com/annperetiatko/news_application/assets/111366589/f9cffdeb-1af0-478a-b926-74b3857e9fea)
